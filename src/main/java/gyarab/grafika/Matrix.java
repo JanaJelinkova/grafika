@@ -79,16 +79,16 @@ public class Matrix {
         Matrix m = Matrix.identity(3);
 
         m.data[0][0] = m.data[1][1] = Math.cos(rad);
-        m.data[0][1] = Math.sin(rad);
-        m.data[1][0] = -1 * Math.sin(rad);
+        m.data[0][1] = Math.sin(rad) * -1.0;
+        m.data[1][0] = Math.sin(rad);
 
         return m;
     }
 
     public static Matrix transposition(double dx, double dy) {
         Matrix m = Matrix.identity(3);
-        m.data[2][0] = dx;
-        m.data[2][1] = dy;
+        m.data[0][2] = dx;
+        m.data[1][2] = dy;
 
         return m;
     }
@@ -239,12 +239,14 @@ public class Matrix {
     }
 
     // print matrix to standard output
-    public void show() {
+    public String toString() {
+        StringBuffer out = new StringBuffer();
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                System.out.printf("%9.4f ", data[i][j]);
+                out.append(String.format("%9.4f ", data[i][j]));
             }
-            System.out.println();
+            out.append("\n");
         }
+        return out.toString();
     }
 }
