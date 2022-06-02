@@ -54,10 +54,10 @@ public abstract class Gyarab2D extends Application {
     }
 
     public void namalujBod(Matrix m, int r, int g, int b) {
-        if (m.getM() != 1 || (m.getN() != 2 && m.getN() != 3))
-            throw new RuntimeException("\u0161patn\u00FD rozm\u011Br matice " + m.getM() + "x" + m.getN());
+        if (m.getRows() != 1 || (m.getColumns() != 2 && m.getColumns() != 3))
+            throw new RuntimeException("\u0161patn\u00FD rozm\u011Br matice " + m.getRows() + "x" + m.getColumns());
 
-        if (m.getN() == 2) {
+        if (m.getColumns() == 2) {
             namalujBod((int)m.get(0,0), (int)m.get(0,1), r,g,b);
         } else if (m.get(0,2) != 0) {
             namalujBod((int)(m.get(0,0) / m.get(0, 2)), (int)(m.get(0,1) / m.get(0, 2)), r, g, b);

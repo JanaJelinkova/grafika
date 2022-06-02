@@ -1,5 +1,7 @@
 package gyarab.grafika;
 
+import java.util.Arrays;
+
 /**
  * ****************************************************************************
  * Compilation: javac Matrix.java Execution: java Matrix
@@ -15,22 +17,26 @@ public class Matrix {
     private final double[][] data;   // M-by-N array
 
     // create M-by-N matrix of 0's
-    public Matrix(int mm, int nn) {
-        this.m = mm;
-        this.n = nn;
+    public Matrix(int rows, int columns) {
+        this.m = rows;
+        this.n = columns;
         data = new double[m][n];
     }
 
-    public int getM() {
+    public int getRows() {
         return m;
     }
 
-    public int getN() {
+    public int getColumns() {
         return n;
     }
 
-    public double get(int x, int y) {
-        return data[x][y];
+    public double get(int row, int column) {
+        return data[row][column];
+    }
+
+    public void set(int row, int column, double value) {
+        data[row][column] = value;
     }
 
     // create matrix based on 2d array
@@ -39,9 +45,7 @@ public class Matrix {
         n = data2[0].length;
         this.data = new double[m][n];
         for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                this.data[i][j] = data2[i][j];
-            }
+            this.data[i] = Arrays.copyOf(data2[i], n);
         }
     }
 
@@ -51,10 +55,10 @@ public class Matrix {
     }
 
     // create and return a random M-by-N matrix with values between 0 and 1
-    public static Matrix random(int m, int n) {
-        Matrix a = new Matrix(m, n);
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
+    public static Matrix random(int rows, int columns) {
+        Matrix a = new Matrix(rows, columns);
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
                 a.data[i][j] = Math.random();
             }
         }
