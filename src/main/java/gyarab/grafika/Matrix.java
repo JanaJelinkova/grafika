@@ -3,12 +3,7 @@ package gyarab.grafika;
 import java.util.Arrays;
 
 /**
- * ****************************************************************************
- * Compilation: javac Matrix.java Execution: java Matrix
- *
- * A bare-bones immutable data type for M-by-N matrices.
- *
- *****************************************************************************
+ * Basic marix operations. Base on https://FIXME!!
  */
 public class Matrix {
 
@@ -85,6 +80,37 @@ public class Matrix {
         return m;
     }
 
+    public static Matrix rotation3Dx(double rad) {
+        Matrix m = Matrix.identity(4);
+
+        m.data[1][1] = m.data[2][2] = Math.cos(rad);
+        m.data[1][2] = Math.sin(rad) * -1.0;
+        m.data[2][1] = Math.sin(rad);
+
+        return m;
+    }
+
+    public static Matrix rotation3Dy(double rad) {
+        Matrix m = Matrix.identity(4);
+
+        m.data[0][0] = m.data[2][2] = Math.cos(rad);
+        m.data[0][2] = Math.sin(rad);
+        m.data[2][0] = Math.sin(rad) * -1.0;
+
+        return m;
+    }
+
+   public static Matrix rotation3Dz(double rad) {
+        Matrix m = Matrix.identity(4);
+
+        m.data[0][0] = m.data[1][1] = Math.cos(rad);
+        m.data[0][1] = Math.sin(rad) * -1.0;
+        m.data[1][0] = Math.sin(rad);
+
+        return m;
+    }
+
+
     public static Matrix transposition(double dx, double dy) {
         Matrix m = Matrix.identity(3);
         m.data[0][2] = dx;
@@ -93,10 +119,29 @@ public class Matrix {
         return m;
     }
 
+    public static Matrix transposition3D(double dx, double dy, double dz) {
+        Matrix m = Matrix.identity(4);
+        m.data[0][3] = dx;
+        m.data[1][3] = dy;
+        m.data[2][3] = dz;
+
+        return m;
+    }
+
+
     public static Matrix scale(double sx, double sy) {
         Matrix m = Matrix.identity(3);
         m.data[0][0] = sx;
         m.data[1][1] = sy;
+
+        return m;
+    }
+
+    public static Matrix scale3D(double sx, double sy, double sz) {
+        Matrix m = Matrix.identity(4);
+        m.data[0][0] = sx;
+        m.data[1][1] = sy;
+        m.data[2][2] = sz;
 
         return m;
     }
