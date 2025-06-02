@@ -26,6 +26,8 @@ public abstract class Gyarab2D extends Application {
      */
     public final int maxXY = 100;
 
+    public final int scale = 5;
+
     /**
      * Namapuje bod na souřadnicích (x,y).
      * Bod může mít libovolnou barvu RGB, položky barvy jsou v rozsahu
@@ -115,7 +117,7 @@ public abstract class Gyarab2D extends Application {
 
         primaryStage.setTitle("Drawing Operations Test");
         Group root = new Group();
-        Canvas canvas = new Canvas(2 * (maxXY + maxXY + 1), 2 * (maxXY + maxXY + 1));
+        Canvas canvas = new Canvas(scale * (maxXY + maxXY + 1), scale * (maxXY + maxXY + 1));
         gc = canvas.getGraphicsContext2D();
 
         new AnimationTimer() {
@@ -131,7 +133,7 @@ public abstract class Gyarab2D extends Application {
                     lastUpdate = now;
                 }
 
-                currImage = new int[(2 * maxXY + 1) * (2 * maxXY + 1)];
+                currImage = new int[(scale * maxXY + 1) * (scale * maxXY + 1)];
                 boolean next = maluj(index);
 
                 if (next) {
@@ -144,13 +146,14 @@ public abstract class Gyarab2D extends Application {
 
                 PixelWriter px = gc.getPixelWriter();
                 for (int i = 0; i < 201 * 201; i++) {
-                    int y = (i / 201) * 2;
-                    int x = (i % 201) * 2;
+                    int y = (i / 201) * scale;
+                    int x = (i % 201) * scale;
 
-                    px.setArgb(x, y, currImage[i]);
-                    px.setArgb(x+1, y, currImage[i]);
-                    px.setArgb(x+1, y+1, currImage[i]);
-                    px.setArgb(x, y+1, currImage[i]);
+                    for (int xa = 0; xa < scale; xa++) {
+                        for (int ya = 0; ya < scale; ya++) {
+                            px.setArgb(x+xa, y+ya, currImage[i]);
+                        }
+                    }
                 }
             }
         }.start();
