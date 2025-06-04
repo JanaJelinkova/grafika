@@ -9,7 +9,7 @@ public class Matrix {
 
     private final int m;             // number of rows
     private final int n;             // number of columns
-    private final double[][] data;   // M-by-N array
+    protected final double[][] data;   // M-by-N array
 
     // create M-by-N matrix of 0's
     public Matrix(int rows, int columns) {
@@ -17,6 +17,24 @@ public class Matrix {
         this.n = columns;
         data = new double[m][n];
     }
+
+    // create NxN matrix of 0's
+    public Matrix(int rows) {
+        this(rows, rows);
+    }
+
+    public Matrix(int rows, int columns, double... values) {
+        this(rows, columns);
+
+        if (values.length != m*n) {
+            throw new RuntimeException("Matice " + m + "x" + n + " potrebuje " + (m*n) + " prvku, ale dostala jen " + values.length);
+        }
+
+        for (int i = 0; i < values.length; i++) {
+            data[i/n][i%n] = values[i];
+        }
+    }
+
 
     public int getRows() {
         return m;
@@ -70,81 +88,6 @@ public class Matrix {
         return ii;
     }
 
-    public static Matrix rotation(double rad) {
-        Matrix m = Matrix.identity(3);
-
-        m.data[0][0] = m.data[1][1] = Math.cos(rad);
-        m.data[0][1] = Math.sin(rad) * -1.0;
-        m.data[1][0] = Math.sin(rad);
-
-        return m;
-    }
-
-    public static Matrix rotation3Dx(double rad) {
-        Matrix m = Matrix.identity(4);
-
-        m.data[1][1] = m.data[2][2] = Math.cos(rad);
-        m.data[1][2] = Math.sin(rad) * -1.0;
-        m.data[2][1] = Math.sin(rad);
-
-        return m;
-    }
-
-    public static Matrix rotation3Dy(double rad) {
-        Matrix m = Matrix.identity(4);
-
-        m.data[0][0] = m.data[2][2] = Math.cos(rad);
-        m.data[0][2] = Math.sin(rad);
-        m.data[2][0] = Math.sin(rad) * -1.0;
-
-        return m;
-    }
-
-   public static Matrix rotation3Dz(double rad) {
-        Matrix m = Matrix.identity(4);
-
-        m.data[0][0] = m.data[1][1] = Math.cos(rad);
-        m.data[0][1] = Math.sin(rad) * -1.0;
-        m.data[1][0] = Math.sin(rad);
-
-        return m;
-    }
-
-
-    public static Matrix transposition(double dx, double dy) {
-        Matrix m = Matrix.identity(3);
-        m.data[0][2] = dx;
-        m.data[1][2] = dy;
-
-        return m;
-    }
-
-    public static Matrix transposition3D(double dx, double dy, double dz) {
-        Matrix m = Matrix.identity(4);
-        m.data[0][3] = dx;
-        m.data[1][3] = dy;
-        m.data[2][3] = dz;
-
-        return m;
-    }
-
-
-    public static Matrix scale(double sx, double sy) {
-        Matrix m = Matrix.identity(3);
-        m.data[0][0] = sx;
-        m.data[1][1] = sy;
-
-        return m;
-    }
-
-    public static Matrix scale3D(double sx, double sy, double sz) {
-        Matrix m = Matrix.identity(4);
-        m.data[0][0] = sx;
-        m.data[1][1] = sy;
-        m.data[2][2] = sz;
-
-        return m;
-    }
 
     // swap rows i and j
     private void swap(int i, int j) {

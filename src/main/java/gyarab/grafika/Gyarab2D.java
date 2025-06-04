@@ -26,7 +26,7 @@ public abstract class Gyarab2D extends Application {
      */
     public final int maxXY = 100;
 
-    public final int scale = 5;
+    public final int scale = 3;
 
     /**
      * Namapuje bod na souřadnicích (x,y).
@@ -54,16 +54,8 @@ public abstract class Gyarab2D extends Application {
         currImage[i] = 255<<24 | (r << 16) | (g << 8) | b;
 
     }
-
-    public void namalujBod(Matrix m, int r, int g, int b) {
-        if (m.getColumns() != 1 || (m.getRows() != 2 && m.getRows() != 3))
-            throw new RuntimeException("\u0161patn\u00FD rozm\u011Br matice " + m.getRows() + "x" + m.getColumns());
-
-        if (m.getRows() == 2) {
-            namalujBod((int)m.get(0,0), (int)m.get(1,0), r,g,b);
-        } else if (m.get(0,2) != 0) {
-            namalujBod((int)(m.get(0,0) / m.get(2, 0)), (int)(m.get(1,0) / m.get(2, 0)), r, g, b);
-        }
+    public void namalujBod(double x, double y, int r, int g, int b) {
+        namalujBod((int)Math.round(x), (int)Math.round(y), r,g,b);
     }
 
 
@@ -74,17 +66,14 @@ public abstract class Gyarab2D extends Application {
      *
      * @param x vodorovná souřadnice bodu v rozsahu [-maxXY,maxXY]
      * @param y svislá souřadnice bodu v rozsahu [-maxXY,maxXY]
-     * @param g odstín šedi
+     * @param gray odstín šedi
      */
-    public void namalujBod(int x, int y, int g) {
-        namalujBod(x, y, g, g, g);
+    public void namalujBod(int x, int y, int gray) {
+        namalujBod(x, y, gray, gray, gray);
     }
-
-    public void namalujBod(Matrix m, int g) {
-        namalujBod(m, g, g, g);
+    public void namalujBod(double x, double y, int gray) {
+        namalujBod((int)Math.round(x), (int)Math.round(y), gray);
     }
-
-
 
     /**
      * Namapuje bod na souřadnicích (x,y).
@@ -96,11 +85,25 @@ public abstract class Gyarab2D extends Application {
     public void namalujBod(int x, int y) {
         namalujBod(x, y, 0,0,0);
     }
-
-    public void namalujBod(Matrix m) {
-        namalujBod(m, 0, 0, 0);
+    public void namalujBod(double x, double y) {
+        namalujBod(x, y, 0, 0, 0);
     }
 
+    public void namalujBod2D(Matrix m, double x, double y, int r, int g, int b) {
+        if (m.getRows() != 3 || m.getColumns() != 3) {
+            throw new RuntimeException("Matice ma spatny rozmer " + m.getRows() + "x" + m.getColumns() + " - potrebuji matici 3x3");
+        }
+
+        Matrix souradnice = new Matrix2D(x, y, 1).times(m);
+        x = souradnice.get(0,0) / souradnice.get(0,2);
+        y = souradnice.get(0,1) / souradnice.get(0,2);
+
+        namalujBod(x, y, r,g,b);
+    }
+
+    public void namalujBod2D(Matrix m, double x, double y) {
+        namalujBod2D(m, x, y, 0, 0, 0);
+    }
 
     /**
      * Namaluj obrázek. K malování jednotlivých bodů použijte metodu <b>namalujBod()<b>.
