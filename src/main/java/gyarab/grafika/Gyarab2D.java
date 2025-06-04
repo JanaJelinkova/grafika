@@ -101,9 +101,26 @@ public abstract class Gyarab2D extends Application {
         namalujBod(x, y, r,g,b);
     }
 
+
     public void namalujBod2D(Matrix m, double x, double y) {
         namalujBod2D(m, x, y, 0, 0, 0);
     }
+
+    public void namalujBod3D(Matrix m, double x, double y, double z, int r, int g, int b) {
+        if (m.getRows() != 4 || m.getColumns() != 4) {
+            throw new RuntimeException("Matice ma spatny rozmer " + m.getRows() + "x" + m.getColumns() + " - potrebuji matici 4x4");
+        }
+
+        Matrix souradnice = new Matrix(1, 4, x, y, z, 1).times(m);
+        x = souradnice.get(0,0) / souradnice.get(0,3);
+        y = souradnice.get(0,1) / souradnice.get(0,3);
+
+        namalujBod(x, y, r,g,b);
+    }
+    public void namalujBod3D(Matrix m, double x, double y, double z) {
+        namalujBod3D(m, x, y, z, 0, 0, 0);
+    }
+
 
     /**
      * Namaluj obrázek. K malování jednotlivých bodů použijte metodu <b>namalujBod()<b>.
